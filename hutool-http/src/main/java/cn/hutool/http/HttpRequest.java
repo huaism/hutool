@@ -458,6 +458,13 @@ public class HttpRequest extends HttpBase<HttpRequest> {
 	 * @since 3.0.7
 	 */
 	public HttpRequest cookie(String cookie) {
+		
+		// 此处会生成双引号导致的问题  如通过： cookie(HttpCookie... cookies) ，生成的结果为： "cookie1="XXXX"; cookie2="XXXX2"" 这样会导致出问题，
+		// 实际应为 :  "cookie1=XXXX; cookie2=XXXX2"
+		if(cookie.contains("\"")){
+		    cookie = cookie.replaceAll("\"", "");
+		}
+		
 		this.cookie = cookie;
 		return this;
 	}
